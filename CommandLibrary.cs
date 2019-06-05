@@ -12,11 +12,12 @@ namespace ZuulCS
 	     */
 		public CommandLibrary()
 		{
-			validCommands = new string[] {
-				"go",
-				"quit",
+            validCommands = new string[] {
+                "go",
+                "quit",
                 "look",
-				"help"
+                "help",
+                "health"
 			};
 		}
 

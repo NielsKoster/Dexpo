@@ -1,5 +1,5 @@
 ﻿using System;
-using Zuul;
+using ZuulCS;
 
 namespace ZuulCS
 {
@@ -38,7 +38,9 @@ namespace ZuulCS
 			Console.WriteLine();
 			Console.WriteLine("Welcome to Zuul!");
 			Console.WriteLine("Zuul is a new, incredibly boring adventure game.");
-			Console.WriteLine("Type 'help' if you need help.");
+			Console.WriteLine("You will need to navigate an area arround a university.");
+			Console.WriteLine("You will begin with 100 hp, but it will run out after a while!");
+			Console.WriteLine("Type 'help' if you need further help.");
 			Console.WriteLine();
 			Console.WriteLine(player.currentRoom.getLongDescription());
 		}
@@ -71,6 +73,9 @@ namespace ZuulCS
                 case "quit":
 					wantToQuit = true;
 					break;
+                case "health":
+                    player.printHealth();
+                    break;
 			}
 
 			return wantToQuit;
@@ -112,9 +117,12 @@ namespace ZuulCS
 			if (nextRoom == null) {
 				Console.WriteLine("There is no door to "+direction+"!");
 			} else {
+                player.damage(1);
+                player.printHealth();
+                player.isAlive();
                 player.currentRoom = nextRoom;
 				Console.WriteLine(player.currentRoom.getLongDescription());
-			}
+            }
 		}
 
 	}
