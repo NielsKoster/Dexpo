@@ -1,5 +1,4 @@
 ﻿using System;
-using ZuulCS;
 
 namespace ZuulCS
 {
@@ -12,6 +11,8 @@ namespace ZuulCS
         {
             player = new Player();
             parser = new Parser();
+
+            createRooms();
         }
 		/**
 	     *  Main play routine.  Loops until end of play.
@@ -35,22 +36,86 @@ namespace ZuulCS
 	     */
 		private void printWelcome()
 		{
-			Console.WriteLine();
-			Console.WriteLine("Welcome to Zuul!");
-			Console.WriteLine("Zuul is a new, incredibly boring adventure game.");
+            Console.WriteLine("");
+            Console.WriteLine("      .o8                                             ");
+            Console.WriteLine("     888                                             ");
+            Console.WriteLine(" .oooo888   .ooooo.  oooo    ooo oo.ooooo.   .ooooo.  ");
+            Console.WriteLine("d88' `888  d88' `88b  `88b..8P'   888' `88b d88' `88b ");
+            Console.WriteLine("888   888  888ooo888    Y888'     888   888 888   888");
+            Console.WriteLine("888   888  888    .o  .o8 88b     888   888 888   888");
+            Console.WriteLine(" Y8bod88P   Y8bod8P' o88'   888o  888bod8P' `Y8bod8P'");
+            Console.WriteLine("                                  888                ");
+            Console.WriteLine("                                 o888o                ");
+            Console.WriteLine("");
+
+            Console.WriteLine("Welcome to Dexpo!");
+			Console.WriteLine("Dexpo is a new, incredibly boring adventure game.");
 			Console.WriteLine("You will need to navigate an area arround a university.");
+			Console.WriteLine("You have been stabbed and are bleeding.");
 			Console.WriteLine("You will begin with 100 hp, but it will run out after a while!");
+			Console.WriteLine("The goal is to find an medic kit to stop the bleeding.");
 			Console.WriteLine("Type 'help' if you need further help.");
 			Console.WriteLine();
 			Console.WriteLine(player.currentRoom.getLongDescription());
 		}
 
-		/**
+        private void createRooms()
+        {
+            Room outside, theatre, pub, lab, office, hallway, gym, principleoffice, musicstudio, roof;
+
+            // create the rooms
+            outside = new Room("outside the main entrance of the university");
+            theatre = new Room("in a lecture theatre");
+            pub = new Room("in the campus pub");
+            lab = new Room("in a computing lab");
+            office = new Room("in the computing admin office");
+            hallway = new Room("in the hallway of the university");
+            gym = new Room("in the gym");
+            principleoffice = new Room("in the principle's office");
+            musicstudio = new Room("in the music studio");
+            roof = new Room("on the roof of the university");
+
+
+            // initialise room exits
+            outside.setExit("north", hallway);
+            outside.setExit("east", theatre);
+            outside.setExit("south", lab);
+            outside.setExit("west", pub);
+
+
+
+            hallway.setExit("east", principleoffice);
+            hallway.setExit("south", outside);
+            hallway.setExit("west", musicstudio);
+            hallway.setExit("up", roof);
+
+            principleoffice.setExit("west", hallway);
+            //TODO: add a key to the principle's office which should be able to open the locked door at the admin office.
+            //principleoffice.inventory.additem(key);
+
+            musicstudio.setExit("east", hallway);
+
+            theatre.setExit("west", outside);
+
+            pub.setExit("east", outside);
+
+            lab.setExit("north", outside);
+            lab.setExit("east", office);
+
+            office.setExit("west", lab);
+            office.isLocked = true;
+
+            roof.setExit("down", hallway);
+
+            player.currentRoom = outside;  // start game outside
+        }
+
+        /**
 	     * Given a command, process (that is: execute) the command.
 	     * If this command ends the game, true is returned, otherwise false is
 	     * returned.
 	     */
-		private bool processCommand(Command command)
+        private bool processCommand(Command command)
 		{
 			bool wantToQuit = false;
 
@@ -74,9 +139,22 @@ namespace ZuulCS
 					wantToQuit = true;
 					break;
                 case "health":
-                    player.printHealth();
+                    player.isAlive();
                     break;
-			}
+                case "take":
+                    Console.WriteLine("Took an item!");
+                    break;
+                case "drop":
+                    Console.WriteLine("Dropped an item!");
+                    break;
+                case "swap":
+                    Console.WriteLine("Swapped items!");
+                    break;
+                case "open":
+                    Console.WriteLine("Opened door!");
+                    break;
+
+            }
 
 			return wantToQuit;
 		}
@@ -116,14 +194,36 @@ namespace ZuulCS
 
 			if (nextRoom == null) {
 				Console.WriteLine("There is no door to "+direction+"!");
-			} else {
-                player.damage(1);
-                player.printHealth();
+			} else { //If the player is allowed to enter the room...
+                
+                //TODO: Check if the inventory of the room isn't empty. If it isn't empty, show us what's inside.
+                player.damage(5);
                 player.isAlive();
+
                 player.currentRoom = nextRoom;
 				Console.WriteLine(player.currentRoom.getLongDescription());
             }
 		}
+
+        private void openDoor(Room room)
+        {
+            //TODO: Check eerst nog of player.inventory een key bevat.
+            if (room.isLocked == true)
+            {
+                Console.WriteLine("");
+                Console.WriteLine("Used key...");
+                Console.WriteLine("Door unlocked!");
+                Console.WriteLine("");
+                room.isLocked = false;
+            }
+
+            if (room.isLocked == false)
+            {
+                Console.WriteLine("");
+                Console.WriteLine("This door doesn't appear to be locked");
+                Console.WriteLine("");
+            }
+        }
 
 	}
 }

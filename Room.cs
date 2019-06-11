@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Zuul;
 
 namespace ZuulCS
 {
@@ -6,6 +7,8 @@ namespace ZuulCS
 	{
 		private string description;
 		private Dictionary<string, Room> exits; // stores exits of this room.
+        private Inventory inventory = new Inventory();
+        public bool isLocked = false;
 
 		/**
 	     * Create a room described "description". Initially, it has no exits.
