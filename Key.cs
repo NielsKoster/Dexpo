@@ -4,11 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Zuul
+namespace ZuulCS
 {
-    class Key: Item
+    public class Key: Item
     {
-        protected string description = "A rusty old key. I wonder what it could unlock.";
-        protected float weight = 1;
+        public Key()
+        {
+            description = "a rusty old key.";
+            weight = 1;
+        }
     }
 }

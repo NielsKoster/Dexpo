@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Zuul
+namespace ZuulCS
 {
-    class Item
+    public class Item
     {
         protected string description = "";
         protected float weight = 1;
@@ -15,6 +11,11 @@ namespace Zuul
         {
             Console.WriteLine(description);
             Console.WriteLine("Weight: " + weight);
+        }
+
+        public string getDescription()
+        {
+            return description;
         }
 
     }

@@ -20,7 +20,8 @@ namespace ZuulCS
                 "health",
                 "take",
                 "drop",
-                "open"
+                "use",
+                "inventory"
 			};
 		}
 

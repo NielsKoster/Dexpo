@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Zuul
+
+namespace ZuulCS
 {
-    class Inventory
+    public class Inventory
     {
         Dictionary<Item, string> Items = new Dictionary<Item, string>();
 
@@ -42,10 +40,21 @@ namespace Zuul
             else
             {
                 other.Items.Remove(item);
-
-                //this.Items.Add(item, item.description);
+                this.Items.Add(item, item.getDescription());
             }
         }
 
+        public void printContents()
+        {
+            Console.WriteLine("");
+            Console.WriteLine("---Begin of inventory---");
+            foreach (KeyValuePair<Item, string> entry in Items)
+            {
+                Console.WriteLine(Items.Values);
+            }
+
+            Console.WriteLine("---End of inventory---");
+            Console.WriteLine("");
+        }
     }
 }

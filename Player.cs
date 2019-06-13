@@ -1,5 +1,4 @@
 ﻿using System;
-using Zuul;
 using ZuulCS;
 
 namespace ZuulCS
@@ -30,6 +29,11 @@ namespace ZuulCS
             {
                 Console.WriteLine("Your current health is " + health);
             }
+        }
+
+        public Inventory getInventory()
+        {
+            return this.inventory;
         }
     }
 }
