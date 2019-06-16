@@ -7,7 +7,7 @@ namespace ZuulCS
 	{
 		private string description;
 		private Dictionary<string, Room> exits; // stores exits of this room.
-        private Inventory inventory = new Inventory();
+        private Inventory inventory;
         public bool isLocked = false;
 
 		/**
@@ -17,7 +17,8 @@ namespace ZuulCS
 	     */
 		public Room(string description)
 		{
-			this.description = description;
+            this.inventory = new Inventory();
+            this.description = description;
 			exits = new Dictionary<string, Room>();
 		}
 
@@ -48,7 +49,13 @@ namespace ZuulCS
 			string returnstring = "You are ";
 			returnstring += description;
 			returnstring += ".\n";
-			returnstring += getExitstring();
+			returnstring += getExitstring() + '\n';
+            if (! this.inventory.isEmpty())
+            {
+                returnstring += "The following items are in the room: \n";
+                returnstring += "-" + this.inventory.printContents();
+            }
+            
 			return returnstring;
 		}
 
@@ -72,18 +79,26 @@ namespace ZuulCS
 			return returnstring;
 		}
 
-		/**
+        /**
 	     * Return the room that is reached if we go from this room in direction
 	     * "direction". If there is no room in that direction, return null.
 	     */
-		public Room getExit(string direction)
-		{
-			if (exits.ContainsKey(direction)) {
-				return (Room)exits[direction];
-			} else {
-				return null;
-			}
+        public Room getExit(string direction)
+        {
+            if (exits.ContainsKey(direction))
+            {
+                return (Room)exits[direction];
+            }
+            else
+            {
+                return null;
+            }
 
-		}
-	}
+        }
+
+        public Inventory GetInventory()
+        {
+            return this.inventory;
+        }
+    }
 }

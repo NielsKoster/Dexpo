@@ -4,8 +4,13 @@ namespace ZuulCS
 {
     public class Item
     {
-        protected string description = "";
-        protected float weight = 1;
+        protected string description;
+        protected float weight;
+
+        public Item() {
+            this.description = "";
+            this.weight = 1;
+        }
 
         public void getStats()
         {

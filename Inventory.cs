@@ -6,20 +6,23 @@ namespace ZuulCS
 {
     public class Inventory
     {
-        Dictionary<Item, string> Items = new Dictionary<Item, string>();
+        Dictionary<string, Item> Items;
 
-        public void Additem(Item item)
+        public Inventory() {
+            this.Items = new Dictionary<string, Item>();
+        }
+        public void Additem(string name, Item item)
         {
             if (item == null){
                 Console.WriteLine("Couldn't find that item! Did you write it correctly?");
             }
             else
             {
-                this.Additem(item);
+                this.Items[name] = item;
             } 
         }
 
-        public void Removeitem(Item item)
+        public void Removeitem(string name, Item item)
         {
             if (item == null)
             {
@@ -27,34 +30,53 @@ namespace ZuulCS
             }
             else
             {
-                this.Items.Remove(item);
+                this.Items.Remove(name);
             }
         }
 
-        public void Swapitems(Inventory other, Item item)
+        public void Swapitems(Inventory other, string name, Item item)
         {
-            if (item == null)
+            
+            if (name == null)
             {
                 Console.WriteLine("Couldn't find that item! Did you write it correctly?");
             }
             else
             {
-                other.Items.Remove(item);
-                this.Items.Add(item, item.getDescription());
+                this.Items[name] = item;
+                other.Items.Remove(name);
             }
+            
         }
 
-        public void printContents()
+        public string printContents()
         {
-            Console.WriteLine("");
-            Console.WriteLine("---Begin of inventory---");
-            foreach (KeyValuePair<Item, string> entry in Items)
+            string ret = "";
+
+            if (!this.isEmpty())
             {
-                Console.WriteLine(Items.Values);
+                foreach (KeyValuePair<string, Item> entry in Items)
+                {
+                    ret += entry.Key + ", ";
+                }
             }
 
-            Console.WriteLine("---End of inventory---");
-            Console.WriteLine("");
+            return ret;
+        }
+
+        public bool isEmpty() {
+            return this.Items.Count == 0;
+        }
+
+        public bool checkItem(string name)
+        {
+            if (Items.ContainsKey(name))
+            {
+                return true;
+            } else
+            {
+                return false;
+            }
         }
     }
 }

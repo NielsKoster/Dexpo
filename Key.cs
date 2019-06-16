@@ -10,7 +10,7 @@ namespace ZuulCS
     {
         public Key()
         {
-            description = "a rusty old key.";
+            description = "a rusty key";
             weight = 1;
         }
     }

@@ -6,13 +6,11 @@ namespace ZuulCS
 	{
 		private Parser parser;
         public Player player;
-        private Item item;
 
         public Game()
         {
             player = new Player();
             parser = new Parser();
-            item = new Item();
 
             createRooms();
         }
@@ -67,6 +65,7 @@ namespace ZuulCS
         private void createRooms()
         {
             Room outside, theatre, pub, lab, office, hallway, gym, principleoffice, musicstudio, roof;
+            Key key = new Key();
 
             // create the rooms
             outside = new Room("outside the main entrance of the university");
@@ -93,8 +92,7 @@ namespace ZuulCS
             hallway.setExit("up", roof);
 
             principleoffice.setExit("west", hallway);
-            //TODO: add a key to the principle's office which should be able to open the locked door at the admin office.
-            //principleoffice.inventory.additem(key);
+            principleoffice.GetInventory().Additem("rustykey",key);
 
             musicstudio.setExit("east", hallway);
 
@@ -145,13 +143,17 @@ namespace ZuulCS
                     player.isAlive();
                     break;
                 case "take":
-                    Console.WriteLine("Took an item!");
+                    if (!player.currentRoom.GetInventory().isEmpty()) {
+                        string item = command.getSecondWord();
+                        player.getInventory().Swapitems(player.currentRoom, item, );
+                        Console.WriteLine("Take item function got called!");
+                    } else
+                    {
+                        Console.WriteLine("There's nothing to take in this room!");
+                    }
                     break;
                 case "drop":
                     Console.WriteLine("Dropped an item!");
-                    break;
-                case "swap":
-                    Console.WriteLine("Swapped items!");
                     break;
                 case "open":
                     Console.WriteLine("Opened door!");
@@ -204,7 +206,9 @@ namespace ZuulCS
 			} else if (nextRoom.isLocked == true)
             {
                 //If the room is locked...
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("The room to the " + direction + " is locked! There should be a key somewhere...");
+                Console.ForegroundColor = ConsoleColor.Gray;
                 Console.WriteLine(player.currentRoom.getLongDescription());
                 player.currentRoom = nextRoom;
             }
@@ -221,21 +225,23 @@ namespace ZuulCS
 
         private void openDoor(Room room)
         {
-            //TODO: Check eerst nog of player.inventory een key bevat.
-            if (room.isLocked == true)
+            if (player.getInventory().checkItem("rustykey"))
             {
-                Console.WriteLine("");
-                Console.WriteLine("Used key...");
-                Console.WriteLine("Door unlocked!");
-                Console.WriteLine("");
-                room.isLocked = false;
-            }
+                if (room.isLocked == true)
+                {
+                    Console.WriteLine("");
+                    Console.WriteLine("Used key...");
+                    Console.WriteLine("Door unlocked!");
+                    Console.WriteLine("");
+                    room.isLocked = false;
+                }
 
-            if (room.isLocked == false)
-            {
-                Console.WriteLine("");
-                Console.WriteLine("This door doesn't appear to be locked");
-                Console.WriteLine("");
+                if (room.isLocked == false)
+                {
+                    Console.WriteLine("");
+                    Console.WriteLine("This door doesn't appear to be locked");
+                    Console.WriteLine("");
+                }
             }
         }
 
