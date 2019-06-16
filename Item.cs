@@ -6,6 +6,7 @@ namespace ZuulCS
     {
         protected string description;
         protected float weight;
+        private string secondWord;
 
         public Item() {
             this.description = "";
@@ -21,6 +22,16 @@ namespace ZuulCS
         public string getDescription()
         {
             return description;
+        }
+
+        public string getSecondword()
+        {
+            return secondWord;
+        }
+
+        public bool hasSecondWord()
+        {
+            return (secondWord != null);
         }
 
     }

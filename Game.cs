@@ -27,8 +27,14 @@ namespace ZuulCS
 			// execute them until the game is over.
 			bool finished = false;
 			while (! finished) {
-				Command command = parser.getCommand();
-				finished = processCommand(command);
+                if (player.isAlive())
+                {
+                    Command command = parser.getCommand();
+                    finished = processCommand(command);
+                } else
+                {
+                    finished = true;
+                }
 			}
 			Console.WriteLine("Thank you for playing.");
 		}
@@ -143,14 +149,8 @@ namespace ZuulCS
                     player.isAlive();
                     break;
                 case "take":
-                    if (!player.currentRoom.GetInventory().isEmpty()) {
-                        string item = command.getSecondWord();
-                        player.getInventory().Swapitems(player.currentRoom, item, );
-                        Console.WriteLine("Take item function got called!");
-                    } else
-                    {
-                        Console.WriteLine("There's nothing to take in this room!");
-                    }
+                    //TODO: Fix this issue where there should be a parameter for which item, but I can't specify which item here...
+                    //takeItem(item);
                     break;
                 case "drop":
                     Console.WriteLine("Dropped an item!");
@@ -216,7 +216,6 @@ namespace ZuulCS
                 
                 //TODO: Check if the inventory of the room isn't empty. If it isn't empty, show us what's inside the inventory first.
                 player.damage(5);
-                player.isAlive();
 
                 player.currentRoom = nextRoom;
 				Console.WriteLine(player.currentRoom.getLongDescription());
@@ -243,6 +242,31 @@ namespace ZuulCS
                     Console.WriteLine("");
                 }
             }
+        }
+
+
+        //TODO: WORK ON THIS FUNCTION
+        private void takeItem(Item item)
+        {
+            if (player.currentRoom.GetInventory().isEmpty())
+            {
+                Console.WriteLine("There's nothing to take in this room!");
+            }
+            else
+            {
+                if (!item.hasSecondWord())
+                {
+                    Console.WriteLine("What do you want to take?");
+                    return;
+                }
+                else
+                {
+                    player.currentRoom.GetInventory().Removeitem(item.getSecondword(), item);
+                    player.getInventory().Additem(item.getSecondword(), item);
+                }
+            }
+
+            
         }
 
 	}

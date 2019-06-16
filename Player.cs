@@ -19,15 +19,21 @@ namespace ZuulCS
             health += amount;
         }
 
-        public void isAlive()
+        public bool isAlive()
         {
             if (health <= 0)
             {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
                 Console.WriteLine("You've died!");
+                Console.ForegroundColor = ConsoleColor.Gray;
+                return false;
             }
             else
             {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
                 Console.WriteLine("Your current health is " + health);
+                Console.ForegroundColor = ConsoleColor.Gray;
+                return true;
             }
         }
 
