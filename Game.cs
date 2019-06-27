@@ -73,6 +73,7 @@ namespace ZuulCS
             Room outside, theatre, pub, lab, office, hallway, gym, principleoffice, musicstudio, roof;
             Key key = new Key();
             Potion potion = new Potion();
+            Candle candle = new Candle();
 
             // create the rooms
             outside = new Room("outside the main entrance of the university");
@@ -106,10 +107,11 @@ namespace ZuulCS
             theatre.setExit("west", outside);
 
             pub.setExit("east", outside);
-            principleoffice.GetInventory().Additem("potion", potion);
+            pub.GetInventory().Additem("potion", potion);
 
             lab.setExit("north", outside);
             lab.setExit("east", office);
+            lab.GetInventory().Additem("candle", candle);
 
             office.setExit("west", lab);
             office.isLocked = true;

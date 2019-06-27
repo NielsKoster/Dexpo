@@ -6,17 +6,18 @@ using System.Threading.Tasks;
 
 namespace ZuulCS
 {
-    class Potion: Item
+    class Candle: Item
     {
-        public Potion()
+        public Candle()
         {
-            description = "a mysterious potion";
-            weight = 4;
+            description = "a hot flame";
+            weight = 1;
         }
 
         public override void Use(Player player, Game game, Command command)
         {
-            player.heal(20);
+            Console.WriteLine("Ahh! That burns!!");
+            player.damage(15);
         }
     }
 }
