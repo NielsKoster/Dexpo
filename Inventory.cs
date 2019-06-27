@@ -6,7 +6,7 @@ namespace ZuulCS
 {
     public class Inventory
     {
-        Dictionary<string, Item> Items;
+        Dictionary<string, Item> Items = new Dictionary<string, Item>();
 
         public Inventory() {
             this.Items = new Dictionary<string, Item>();
@@ -59,6 +59,9 @@ namespace ZuulCS
                 {
                     ret += entry.Key + ", ";
                 }
+            } else
+            {
+                ret += "Inventory is empty!";
             }
 
             return ret;
@@ -73,10 +76,16 @@ namespace ZuulCS
             if (Items.ContainsKey(name))
             {
                 return true;
-            } else
+            }
+            else
             {
                 return false;
             }
+        }
+
+        public Dictionary<string, Item> getItems()
+        {
+            return this.Items;
         }
     }
 }

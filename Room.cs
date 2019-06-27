@@ -48,8 +48,9 @@ namespace ZuulCS
 		{
 			string returnstring = "You are ";
 			returnstring += description;
-			returnstring += ".\n";
+			returnstring += "\n";
 			returnstring += getExitstring() + '\n';
+            returnstring += "\n";
             if (! this.inventory.isEmpty())
             {
                 returnstring += "The following items are in the room: \n";

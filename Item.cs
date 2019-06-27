@@ -13,6 +13,11 @@ namespace ZuulCS
             this.weight = 1;
         }
 
+        public void Use()
+        {
+            Console.WriteLine("This is the use function of the item class");
+        }
+
         public void getStats()
         {
             Console.WriteLine(description);

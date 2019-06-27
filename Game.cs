@@ -72,6 +72,7 @@ namespace ZuulCS
         {
             Room outside, theatre, pub, lab, office, hallway, gym, principleoffice, musicstudio, roof;
             Key key = new Key();
+            Potion potion = new Potion();
 
             // create the rooms
             outside = new Room("outside the main entrance of the university");
@@ -98,13 +99,14 @@ namespace ZuulCS
             hallway.setExit("up", roof);
 
             principleoffice.setExit("west", hallway);
-            principleoffice.GetInventory().Additem("rustykey",key);
+            principleoffice.GetInventory().Additem("key",key);
 
             musicstudio.setExit("east", hallway);
 
             theatre.setExit("west", outside);
 
             pub.setExit("east", outside);
+            principleoffice.GetInventory().Additem("potion", potion);
 
             lab.setExit("north", outside);
             lab.setExit("east", office);
@@ -149,8 +151,7 @@ namespace ZuulCS
                     player.isAlive();
                     break;
                 case "take":
-                    //TODO: Fix this issue where there should be a parameter for which item, but I can't specify which item here...
-                    //takeItem(item);
+                    takeItem(command);
                     break;
                 case "drop":
                     Console.WriteLine("Dropped an item!");
@@ -159,7 +160,10 @@ namespace ZuulCS
                     Console.WriteLine("Opened door!");
                     break;
                 case "inventory":
-                    player.getInventory().printContents();
+                    Console.WriteLine(player.getInventory().printContents());
+                    break;
+                case "use":
+                    useItem(command);
                     break;
 
             }
@@ -206,15 +210,12 @@ namespace ZuulCS
 			} else if (nextRoom.isLocked == true)
             {
                 //If the room is locked...
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("The room to the " + direction + " is locked! There should be a key somewhere...");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("\n The room to the " + direction + " is locked! There should be a key somewhere...");
                 Console.ForegroundColor = ConsoleColor.Gray;
                 Console.WriteLine(player.currentRoom.getLongDescription());
-                player.currentRoom = nextRoom;
             }
-            else { //If the player is allowed to enter the room...
-                
-                //TODO: Check if the inventory of the room isn't empty. If it isn't empty, show us what's inside the inventory first.
+            else { //If the player is allowed to enter the room..
                 player.damage(5);
 
                 player.currentRoom = nextRoom;
@@ -224,7 +225,7 @@ namespace ZuulCS
 
         private void openDoor(Room room)
         {
-            if (player.getInventory().checkItem("rustykey"))
+            if (player.getInventory().checkItem("key"))
             {
                 if (room.isLocked == true)
                 {
@@ -244,30 +245,53 @@ namespace ZuulCS
             }
         }
 
-
-        //TODO: WORK ON THIS FUNCTION
-        private void takeItem(Item item)
+        private void takeItem(Command command)
         {
-            if (player.currentRoom.GetInventory().isEmpty())
+            if (!command.hasSecondWord())
             {
-                Console.WriteLine("There's nothing to take in this room!");
+                // if there is no second word, we don't know what to take
+                Console.WriteLine("Take what?");
+                return;
+            }
+            //if the second word is in place, then we can search in the room's inventory for the given word
+            string itemtotake = command.getSecondWord();
+
+            //However, first we need to check if the given command actually corresponds to an existing item which is in the room's inventory
+            if (player.currentRoom.GetInventory().checkItem(itemtotake))
+                {
+
+                Item item = player.currentRoom.GetInventory().getItems()[command.getSecondWord()];
+                //if the item given does correspond to an item in the room's inventory, then we can give it to the player
+                player.getInventory().Additem(itemtotake, item);
+                player.currentRoom.GetInventory().Removeitem(itemtotake, item);
+                Console.WriteLine("Took " + itemtotake);
             }
             else
             {
-                if (!item.hasSecondWord())
-                {
-                    Console.WriteLine("What do you want to take?");
-                    return;
-                }
-                else
-                {
-                    player.currentRoom.GetInventory().Removeitem(item.getSecondword(), item);
-                    player.getInventory().Additem(item.getSecondword(), item);
-                }
+                //Speaks for itself honestly
+                Console.WriteLine("That item doesn't seem to exist. Did you write it correctly?");
             }
-
-            
         }
 
-	}
+        public void useItem(Command command)
+        {
+            if (!command.hasSecondWord())
+            {
+                Console.WriteLine("Use what?");
+                return;
+            }
+
+            string itemtouse = command.getSecondWord();
+
+            //If the item in question is in the player's inventory...
+            if (player.getInventory().checkItem(itemtouse))
+            {
+                player.getInventory().getItems()[itemtouse].Use();
+            }
+            else
+            {
+                Console.WriteLine("Can't find the item to use in your inventory.");
+            }
+        }
+    }
 }
