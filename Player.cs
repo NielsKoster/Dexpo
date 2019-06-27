@@ -7,6 +7,9 @@ namespace ZuulCS
     {
         public Room currentRoom;
         public float health = 100;
+        private float maxweight = 5;
+        public int currentweight = 0;
+
         private Inventory inventory = new Inventory();
 
         public void damage(float amount)
@@ -14,7 +17,7 @@ namespace ZuulCS
             health -= amount;
         }
 
-        private void heal(float amount)
+        public void heal(float amount)
         {
             health += amount;
         }
@@ -40,6 +43,15 @@ namespace ZuulCS
         public Inventory getInventory()
         {
             return this.inventory;
+        }
+
+        public float getMaxWeight()
+        {
+            return maxweight;
+        }
+        public float getCurrentWeight()
+        {
+            return currentweight;
         }
     }
 }

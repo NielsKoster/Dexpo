@@ -10,13 +10,13 @@ namespace ZuulCS
     {
         public Potion()
         {
-            this.description = "a mysterious potion";
-            this.weight = 1;
+            description = "a mysterious potion";
+            weight = 5;
         }
 
-        public void Use()
+        public override void Use(Player player, Game game, Command command)
         {
-            Console.WriteLine("Damage player!");
+            player.heal(20);
         }
     }
 }

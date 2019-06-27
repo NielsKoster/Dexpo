@@ -154,10 +154,7 @@ namespace ZuulCS
                     takeItem(command);
                     break;
                 case "drop":
-                    Console.WriteLine("Dropped an item!");
-                    break;
-                case "open":
-                    Console.WriteLine("Opened door!");
+                    dropItem(command);
                     break;
                 case "inventory":
                     Console.WriteLine(player.getInventory().printContents());
@@ -255,16 +252,56 @@ namespace ZuulCS
             }
             //if the second word is in place, then we can search in the room's inventory for the given word
             string itemtotake = command.getSecondWord();
-
+            
             //However, first we need to check if the given command actually corresponds to an existing item which is in the room's inventory
             if (player.currentRoom.GetInventory().checkItem(itemtotake))
                 {
-
+                //Check if the player actually specifically said what they wanted
                 Item item = player.currentRoom.GetInventory().getItems()[command.getSecondWord()];
+
+                //Add the weight of the item in the inventory
+                player.currentweight += item.weight;
+
+                if (player.currentweight >= player.getMaxWeight())
+                {
+                    Console.WriteLine("Your inventory is full, you can't pick this up.");
+                    item.weight -= player.currentweight;
+                }
+                else
+                {
+                    //if the item given does correspond to an item in the room's inventory, then we can give it to the player
+                    player.getInventory().Additem(itemtotake, item);
+                    player.currentRoom.GetInventory().Removeitem(itemtotake, item);
+                    Console.WriteLine("Took " + itemtotake);
+                }
+            }
+            else
+            {
+                //Speaks for itself honestly
+                Console.WriteLine("That item doesn't seem to exist. Did you write it correctly?");
+            }
+        }
+
+        private void dropItem(Command command)
+        {
+            if (!command.hasSecondWord())
+            {
+                // if there is no second word, we don't know what to take
+                Console.WriteLine("Drop what?");
+                return;
+            }
+            //if the second word is in place, then we can search in the room's inventory for the given word
+            string itemtodrop = command.getSecondWord();
+
+            //However, first we need to check if the given command actually corresponds to an existing item which is in the room's inventory
+            if (player.getInventory().checkItem(itemtodrop))
+            { 
+                Item item = player.getInventory().getItems()[command.getSecondWord()];
+                item.weight -= player.currentweight;
                 //if the item given does correspond to an item in the room's inventory, then we can give it to the player
-                player.getInventory().Additem(itemtotake, item);
-                player.currentRoom.GetInventory().Removeitem(itemtotake, item);
-                Console.WriteLine("Took " + itemtotake);
+                player.currentRoom.GetInventory().Additem(itemtodrop, item);
+                player.getInventory().Removeitem(itemtodrop, item);
+                Console.WriteLine("Dropped " + itemtodrop);
             }
             else
             {
@@ -281,17 +318,38 @@ namespace ZuulCS
                 return;
             }
 
-            string itemtouse = command.getSecondWord();
+            string itemstring = command.getSecondWord();
 
             //If the item in question is in the player's inventory...
-            if (player.getInventory().checkItem(itemtouse))
+            if (player.getInventory().checkItem(itemstring))
             {
-                player.getInventory().getItems()[itemtouse].Use();
+                player.getInventory().getItems()[itemstring].Use(player, this, command);
             }
             else
             {
                 Console.WriteLine("Can't find the item to use in your inventory.");
             }
+        }
+
+        public void UnlockDoor(Command command)
+        {
+            string direction = command.getSecondWord();
+            player.currentRoom.CheckForLockedExits(direction);
+            /*string direction = command.getSecondWord();
+
+                if (player.currentRoom.CheckForLockedExits(direction))
+                {
+                    player.currentRoom.
+                }
+                else
+                {
+                    Console.WriteLine("The room isn't locked.");
+                }
+            } else
+            {
+                Console.WriteLine("Nextroom = null");
+            }
+            */
         }
     }
 }

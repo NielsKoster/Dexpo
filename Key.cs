@@ -11,12 +11,12 @@ namespace ZuulCS
         public Key()
         {
             description = "a key";
-            weight = 1;
+            weight = 3;
         }
 
-        public void Use()
+        public override void Use(Player player, Game game, Command command)
         {
-            Console.WriteLine("That won't work. Please use the " + "'open'" + " command to use this key to open a door.");
+            game.UnlockDoor(command); 
         }
     }
 }

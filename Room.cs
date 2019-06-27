@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using ZuulCS;
+using System;
 
 namespace ZuulCS
 {
@@ -9,12 +10,14 @@ namespace ZuulCS
 		private Dictionary<string, Room> exits; // stores exits of this room.
         private Inventory inventory;
         public bool isLocked = false;
+        public bool hasLockedNeighbours;
 
 		/**
 	     * Create a room described "description". Initially, it has no exits.
 	     * "description" is something like "in a kitchen" or "in an open court
 	     * yard".
 	     */
+
 		public Room(string description)
 		{
             this.inventory = new Inventory();
@@ -100,6 +103,21 @@ namespace ZuulCS
         public Inventory GetInventory()
         {
             return this.inventory;
+        }
+
+        public Dictionary<string, Room> CheckForLockedExits(string direction)
+        {
+            /*if (this.exits[direction].isLocked)
+            {
+                Console.WriteLine("Locked exits detected");
+                return exits;
+            } else
+            {
+                Console.WriteLine("no Locked exits detected");
+                return null;
+            }
+            */
+            return null;
         }
     }
 }

@@ -5,15 +5,15 @@ namespace ZuulCS
     public class Item
     {
         protected string description;
-        protected float weight;
+        public int weight;
         private string secondWord;
 
         public Item() {
-            this.description = "";
-            this.weight = 1;
+            description = "";
+            weight = 1;
         }
 
-        public void Use()
+        public virtual void Use(Player player, Game game, Command command)
         {
             Console.WriteLine("This is the use function of the item class");
         }
@@ -37,6 +37,11 @@ namespace ZuulCS
         public bool hasSecondWord()
         {
             return (secondWord != null);
+        }
+
+        public float getWeight()
+        {
+            return weight;
         }
 
     }
