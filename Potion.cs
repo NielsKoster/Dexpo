@@ -16,7 +16,12 @@ namespace ZuulCS
 
         public override void Use(Player player, Game game, Command command)
         {
-            player.heal(20);
+            if (player.health <= 80)
+            {
+                player.heal(20);
+                player.isBleeding = false;
+                Console.WriteLine("The bleeding has stopped! You win!");
+            }
         }
     }
 }

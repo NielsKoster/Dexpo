@@ -115,6 +115,7 @@ namespace ZuulCS
 
             office.setExit("west", lab);
             office.isLocked = true;
+            office.GetInventory().Additem("potion", potion);
 
             roof.setExit("down", hallway);
 
@@ -215,34 +216,15 @@ namespace ZuulCS
                 Console.WriteLine(player.currentRoom.getLongDescription());
             }
             else { //If the player is allowed to enter the room..
-                player.damage(5);
+                if (player.isBleeding)
+                {
+                    player.damage(5);
+                }
 
                 player.currentRoom = nextRoom;
 				Console.WriteLine(player.currentRoom.getLongDescription());
             }
 		}
-
-        private void openDoor(Room room)
-        {
-            if (player.getInventory().checkItem("key"))
-            {
-                if (room.isLocked == true)
-                {
-                    Console.WriteLine("");
-                    Console.WriteLine("Used key...");
-                    Console.WriteLine("Door unlocked!");
-                    Console.WriteLine("");
-                    room.isLocked = false;
-                }
-
-                if (room.isLocked == false)
-                {
-                    Console.WriteLine("");
-                    Console.WriteLine("This door doesn't appear to be locked");
-                    Console.WriteLine("");
-                }
-            }
-        }
 
         private void takeItem(Command command)
         {
@@ -331,27 +313,6 @@ namespace ZuulCS
             {
                 Console.WriteLine("Can't find the item to use in your inventory.");
             }
-        }
-
-        public void UnlockDoor(Command command)
-        {
-            string direction = command.getSecondWord();
-            player.currentRoom.CheckForLockedExits(direction);
-            /*string direction = command.getSecondWord();
-
-                if (player.currentRoom.CheckForLockedExits(direction))
-                {
-                    player.currentRoom.
-                }
-                else
-                {
-                    Console.WriteLine("The room isn't locked.");
-                }
-            } else
-            {
-                Console.WriteLine("Nextroom = null");
-            }
-            */
         }
     }
 }

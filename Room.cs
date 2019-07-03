@@ -10,7 +10,6 @@ namespace ZuulCS
 		private Dictionary<string, Room> exits; // stores exits of this room.
         private Inventory inventory;
         public bool isLocked = false;
-        public bool hasLockedNeighbours;
 
 		/**
 	     * Create a room described "description". Initially, it has no exits.
@@ -105,19 +104,17 @@ namespace ZuulCS
             return this.inventory;
         }
 
-        public Dictionary<string, Room> CheckForLockedExits(string direction)
+        public void UnlockDoor(Command command, Item item)
         {
-            /*if (this.exits[direction].isLocked)
+            string direction = command.getThirdWord();
+
+            if (!command.hasThirdWord())
             {
-                Console.WriteLine("Locked exits detected");
-                return exits;
+                Console.WriteLine("On which direction should the key be used?");
             } else
             {
-                Console.WriteLine("no Locked exits detected");
-                return null;
+                
             }
-            */
-            return null;
         }
     }
 }

@@ -9,6 +9,7 @@ namespace ZuulCS
         public float health = 100;
         private float maxweight = 5;
         public int currentweight = 0;
+        public bool isBleeding = true;
 
         private Inventory inventory = new Inventory();
 
